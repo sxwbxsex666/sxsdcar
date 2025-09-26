@@ -185,7 +185,7 @@
     <div class="qr-container">
         <p class="qr-title">通行二维码</p>
         <div class="qr-img-container" id="qrImgContainer">
-            <img id="qrImg" src="/sxsdcar/tpcar.gif" alt="通行二维码" class="qr-img">
+            <img id="qrImg" src="https://picsum.photos/220/220" alt="通行二维码" class="qr-img">
             <div class="upload-overlay">
                 <div class="upload-text">点击上传图片</div>
             </div>
@@ -215,38 +215,8 @@
         // 每秒更新
         setInterval(updateTime, 1000);
 
-        // 处理二维码上传
-        const qrImgContainer = document.getElementById('qrImgContainer');
-        const qrImg = document.getElementById('qrImg');
-        const qrFileInput = document.getElementById('qrFileInput');
-
-        // 点击二维码容器打开文件选择对话框
-        qrImgContainer.addEventListener('click', () => {
-            qrFileInput.click();
-        });
-
-        // 处理文件选择
-        qrFileInput.addEventListener('change', (e) => {
-            const file = e.target.files[0];
-            if (file) {
-                const reader = new FileReader();
-                reader.onload = (event) => {
-                    qrImg.src = event.target.result;
-                    // 保存到本地存储，以便刷新页面后仍能显示
-                    localStorage.setItem('visitorQrCode', event.target.result);
-                };
-                reader.readAsDataURL(file);
-            }
-        });
-
-        // 页面加载时检查本地存储中是否有保存的二维码
-        document.addEventListener('DOMContentLoaded', () => {
-            const savedQrCode = localStorage.getItem('visitorQrCode');
-            if (savedQrCode) {
-                qrImg.src = savedQrCode;
-            }
-        });
-    </script>
+     
 </body>
 </html>
+
 
