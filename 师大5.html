@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>通行码</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Helvetica, Arial, sans-serif;
+            background-color: #F5F7FA;
+        }
+        .header-bar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 12px 16px;
+            background-color: #FFFFFF;
+            border-bottom: 1px solid #E5E7EB;
+        }
+        .header-left, .header-right {
+            font-size: 20px;
+            color: #333333;
+        }
+        .header-title {
+            font-size: 17px;
+            font-weight: 600;
+            color: #111827;
+        }
+        .sub-domain {
+            text-align: center;
+            font-size: 13px;
+            color: #6B7280;
+            margin: 6px 0;
+        }
+        .blue-panel {
+            background: linear-gradient(135deg, #168CFE, #1266E5);
+            color: #FFFFFF;
+            border-radius: 12px;
+            margin: 16px;
+            padding: 16px;
+        }
+        .panel-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+        .appoint-time {
+            font-size: 14px;
+        }
+        .visit-status {
+            background-color: #FFFFFF;
+            color: #1266E5;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 500;
+        }
+        .visitor-details {
+            margin-top: 8px;
+        }
+        .visitor-details p {
+            font-size: 14px;
+            margin: 4px 0;
+        }
+        .qr-container {
+            background-color: #FFFFFF;
+            margin: 16px;
+            border-radius: 12px;
+            padding: 16px;
+            text-align: center;
+        }
+        .qr-title {
+            font-size: 15px;
+            font-weight: 500;
+            margin-bottom: 12px;
+        }
+        .qr-img-container {
+            position: relative;
+            width: 220px; /* 增大二维码容器宽度 */
+            height: 220px; /* 增大二维码容器高度 */
+            margin: 8px auto;
+            cursor: pointer;
+            border: 2px dashed #E5E7EB;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+        .qr-img-container:hover {
+            border-color: #1266E5;
+        }
+        .qr-img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            display: block;
+        }
+        .upload-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+        .qr-img-container:hover .upload-overlay {
+            opacity: 1;
+        }
+        .upload-text {
+            color: white;
+            font-size: 12px;
+        }
+        .time-display {
+            font-size: 22px;
+            font-weight: bold;
+            margin: 10px 0;
+            color: #111827;
+            letter-spacing: 0.3px;
+            transform: scale(1, 1.2);
+            transform-origin: center;
+            display: inline-block;
+        }
+        .instruction-text {
+            font-size: 13px;
+            color: #DC3545;
+            margin: 8px 0;
+            line-height: 1.5;
+        }
+        .access-info {
+            font-size: 13px;
+            color: #6B7280;
+            margin: 8px 0;
+        }
+        .access-info span {
+            color: #1266E5;
+            cursor: pointer;
+        }
+        .home-btn {
+            display: block;
+            width: 90%;
+            max-width: 280px;
+            margin: 24px auto;
+            padding: 12px 0;
+            text-align: center;
+            background-color: #1266E5;
+            color: #FFFFFF;
+            border-radius: 25px;
+            text-decoration: none;
+            font-size: 16px;
+        }
+        #qrFileInput {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="header-bar">
+        <div class="header-left">×</div>
+        <div class="header-title">通行码</div>
+        <div class="header-right">...</div>
+    </div>
+    <div class="sub-domain">fangke.sxnu.edu.cn</div>
+    
+    <div class="blue-panel">
+        <div class="panel-header">
+            <div class="appoint-time">预约时间：2025-05-18 00:00:00</div>
+            <div class="visit-status">待拜访</div>
+        </div>
+        <div class="visitor-details">
+            <p>被访人：李书卓 131*******5127 ☎</p>
+            <p>来访人：梁宇 155*******7251</p>
+            <p>车牌号：无</p>
+        </div>
+    </div>
+    
+    <div class="qr-container">
+        <p class="qr-title">通行二维码</p>
+        <div class="qr-img-container" id="qrImgContainer">
+            <img id="qrImg" src="https://picsum.photos/220/220" alt="通行二维码" class="qr-img">
+            <div class="upload-overlay">
+                <div class="upload-text">点击上传图片</div>
+            </div>
+        </div>
+        <input type="file" id="qrFileInput" accept="image/*">
+        <div class="time-display" id="liveTime">2025-05-18 17:22:39</div>
+        <p class="instruction-text">行人及车辆乘客均需步行由东门人行通道验证通行二维码<br>车辆驾驶员由东门安保人员核验通行二维码</p>
+        <p class="access-info">出入门禁：东门南侧,东门北侧,西门南侧,西门北侧 <span>收起</span></p>
+    </div>
+    
+    <a href="#" class="home-btn">返回首页</a>
+
+    <script>
+        // 处理时间显示
+        function renderCurrentTime() {
+            const now = new Date();
+            const format = (n) => n.toString().padStart(2, '0');
+            return `${now.getFullYear()}-${format(now.getMonth()+1)}-${format(now.getDate())} ${format(now.getHours())}:${format(now.getMinutes())}:${format(now.getSeconds())}`;
+        }
+
+        function updateTime() {
+            document.getElementById('liveTime').textContent = renderCurrentTime();
+        }
+
+        // 初始化时间
+        updateTime();
+        // 每秒更新
+        setInterval(updateTime, 1000);
+
+        // 处理二维码上传
+        const qrImgContainer = document.getElementById('qrImgContainer');
+        const qrImg = document.getElementById('qrImg');
+        const qrFileInput = document.getElementById('qrFileInput');
+
+        // 点击二维码容器打开文件选择对话框
+        qrImgContainer.addEventListener('click', () => {
+            qrFileInput.click();
+        });
+
+        // 处理文件选择
+        qrFileInput.addEventListener('change', (e) => {
+            const file = e.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = (event) => {
+                    qrImg.src = event.target.result;
+                    // 保存到本地存储，以便刷新页面后仍能显示
+                    localStorage.setItem('visitorQrCode', event.target.result);
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+
+        // 页面加载时检查本地存储中是否有保存的二维码
+        document.addEventListener('DOMContentLoaded', () => {
+            const savedQrCode = localStorage.getItem('visitorQrCode');
+            if (savedQrCode) {
+                qrImg.src = savedQrCode;
+            }
+        });
+    </script>
+</body>
+</html>
